@@ -1,11 +1,11 @@
 const mysql = require('mysql2/promise');
 
-// Create a connection pool configured per user's request
 const pool = mysql.createPool({
-  host: 'localhost',
-  port: 3309,
-  user: 'root',
-  password: 'root',
+  host: process.env.DB_HOST || 'localhost',
+  port: process.env.DB_PORT || 3309,
+  user: process.env.DB_USER || 'root',
+  password: process.env.DB_PASSWORD || 'root',
+  database: process.env.DB_NAME, // Usually set in production directly, allowing fallback undefined locally
   waitForConnections: true,
   connectionLimit: 10,
   queueLimit: 0
@@ -13,11 +13,12 @@ const pool = mysql.createPool({
 
 const initializeDB = async () => {
   try {
-    // 1. Ensure database exists
-    await pool.query('CREATE DATABASE IF NOT EXISTS `notes_db`');
+    // 1. Ensure database exists (Only necessary for local, prod usually provides a DB instance)
+    const dbName = process.env.DB_NAME || 'notes_db';
+    await pool.query(`CREATE DATABASE IF NOT EXISTS \`${dbName}\``);
     
     // 2. Select the database
-    await pool.query('USE `notes_db`');
+    await pool.query(`USE \`${dbName}\``);
 
     // 3. Create the notes table
     const createTableQuery = `

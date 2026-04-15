@@ -58,7 +58,26 @@ npm run dev
 - **Backend**: Node.js, Express, MySQL2 (Connection Pooling)
 - **Database**: MySQL
 
+## Deployment (Render)
+This project is configured as a Unified Web Service for easy deployment to Render.
+
+**Option 1: Using Render Blueprint (Recommended)**
+1. Connect your GitHub repository to Render.
+2. Select "Blueprints" > "New Blueprint Instance".
+3. Render will automatically read the `render.yaml` file and provision the web service.
+4. In the Render Dashboard, add your production database credentials (`DB_HOST`, `DB_NAME`, `DB_PASSWORD`, `DB_PORT`, `DB_USER`) as environment variables.
+
+**Option 2: Manual Setup**
+1. Create a new "Web Service" on Render.
+2. Select your GitHub repository.
+3. Configure the following:
+   - **Environment:** `Node`
+   - **Build Command:** `cd frontend && npm install && npm run build && cd ../backend && npm install`
+   - **Start Command:** `cd backend && npm start`
+4. Add your production MySQL credentials to the Environment Variables section.
+
 ## Core Assignment Highlights
 - **Engineering Fundamentals**: Proper Debouncing for save functions via `lodash.debounce`.
 - **API Design**: Clean RESTful routes.
 - **Bonus Features Delivered**: Search, Dark Mode, Responsive Layout, Debounced Auto-Save.
+- **Production Ready**: Fully configured monorepo build setup for Render.

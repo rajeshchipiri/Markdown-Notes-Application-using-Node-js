@@ -5,7 +5,7 @@ import debounce from 'lodash.debounce';
 import Sidebar from './components/Sidebar';
 import Editor from './components/Editor';
 
-const API_URL = 'http://localhost:5000/api/notes';
+const API_URL = '/api/notes';
 
 function App() {
   const [notes, setNotes] = useState([]);
