@@ -5,7 +5,8 @@ const pool = mysql.createPool({
   port: process.env.DB_PORT || 3309,
   user: process.env.DB_USER || 'root',
   password: process.env.DB_PASSWORD || 'root',
-  database: process.env.DB_NAME, // Usually set in production directly, allowing fallback undefined locally
+  database: process.env.DB_NAME,
+  ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : undefined,
   waitForConnections: true,
   connectionLimit: 10,
   queueLimit: 0
