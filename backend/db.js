@@ -14,14 +14,11 @@ const pool = mysql.createPool({
 
 const initializeDB = async () => {
   try {
-    // 1. Ensure database exists (Only necessary for local, prod usually provides a DB instance)
-    const dbName = process.env.DB_NAME || 'notes_db';
-    await pool.query(`CREATE DATABASE IF NOT EXISTS \`${dbName}\``);
+    // Note: Connection pool already selects the correct database based on DB_NAME.
+    // In production managed databases (like Aiven/AWS), you cannot 'CREATE DATABASE' due to restricted permissions.
+    // If you are locally developing without a DB provisioned, this assumes you created it manually using the CLI first.
     
-    // 2. Select the database
-    await pool.query(`USE \`${dbName}\``);
-
-    // 3. Create the notes table
+    // Create the notes table
     const createTableQuery = `
       CREATE TABLE IF NOT EXISTS notes (
         id INT AUTO_INCREMENT PRIMARY KEY,

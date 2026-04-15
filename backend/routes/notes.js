@@ -6,7 +6,7 @@ const { queryDB } = require('../db');
 router.get('/', async (req, res) => {
   try {
     const { search } = req.query;
-    let sql = 'SELECT * FROM notes_db.notes';
+    let sql = 'SELECT * FROM notes';
     let params = [];
 
     if (search) {
@@ -29,7 +29,7 @@ router.get('/', async (req, res) => {
 router.get('/:id', async (req, res) => {
   try {
     const { id } = req.params;
-    const [rows] = await queryDB('SELECT * FROM notes_db.notes WHERE id = ?', [id]);
+    const [rows] = await queryDB('SELECT * FROM notes WHERE id = ?', [id]);
     
     if (rows.length === 0) {
       return res.status(404).json({ error: 'Note not found' });
@@ -51,7 +51,7 @@ router.post('/', async (req, res) => {
         return res.status(400).json({ error: 'Title is required' });
     }
 
-    const sql = 'INSERT INTO notes_db.notes (title, content) VALUES (?, ?)';
+    const sql = 'INSERT INTO notes (title, content) VALUES (?, ?)';
     const [result] = await queryDB(sql, [title, content || '']);
     
     res.status(201).json({ 
@@ -74,7 +74,7 @@ router.put('/:id', async (req, res) => {
         return res.status(400).json({ error: 'Nothing to update' });
     }
 
-    const sql = 'UPDATE notes_db.notes SET title = COALESCE(?, title), content = COALESCE(?, content) WHERE id = ?';
+    const sql = 'UPDATE notes SET title = COALESCE(?, title), content = COALESCE(?, content) WHERE id = ?';
     const [result] = await queryDB(sql, [title, content, id]);
     
     if (result.affectedRows === 0) {
@@ -93,7 +93,7 @@ router.delete('/:id', async (req, res) => {
   try {
     const { id } = req.params;
     
-    const sql = 'DELETE FROM notes_db.notes WHERE id = ?';
+    const sql = 'DELETE FROM notes WHERE id = ?';
     const [result] = await queryDB(sql, [id]);
     
     if (result.affectedRows === 0) {
